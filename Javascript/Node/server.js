@@ -1,9 +1,11 @@
+//importinting an external model
 // var dt = require('./myFirstModule');
+
 var http = require("http");
 var url = require("url");
 var fs = require("fs");
 
-// Basic server
+// Basic server using an external module
 // http.createServer(function (req, res) {
 //   res.writeHead(200, {'Content-Type': 'text/plain'});
 //   res.write(`The Date and Time is : ${dt.myDateTime()}\n`);
@@ -12,9 +14,10 @@ var fs = require("fs");
 //   res.end("\nHello Fam !!!");
 // }).listen(8080);
 
+// local server link
 // http://localhost:8080/
 
-// To get query strings
+// To do query strings
 // http.createServer(function (req, res) {
 //   res.writeHead(200, {'Content-Type':'text/plain'});
 //   var q = url.parse(req.url, true).query;
