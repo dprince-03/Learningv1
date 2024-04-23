@@ -1,7 +1,6 @@
 var formidable = require('formidable');
 var http = require('http');
 var fs = require('fs');
-const path = require("path")
 
 // Create an Upload Form
 // http.createServer(function(req, res){
@@ -21,11 +20,7 @@ http.createServer(function(req, res){
         form.parse(req, function(err, fields, files){
             // Save the File
             var oldpath = files.filetoupload.filepath;
-            const newPath = path.join(
-              __dirname,
-              files.filetoupload.originalFilename
-            )
-            
+            var newpath ="C:Users/princ/Documents/GitHub/Learningv1/Javascript/Node" + files.filetoupload.originalFilename;
 
             fs.rename(oldpath, newpath, function(err){
                 if(err) throw err;

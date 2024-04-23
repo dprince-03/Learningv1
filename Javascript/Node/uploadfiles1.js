@@ -3,8 +3,6 @@ const formidable = require("formidable");
 const http = require("http");
 
 http.createServer(function (req, res) {
-  console.log(req.headers);
-  console.log(req.body);
     if (req.url === "/fileupload") {
       const form = new formidable.IncomingForm();
       
