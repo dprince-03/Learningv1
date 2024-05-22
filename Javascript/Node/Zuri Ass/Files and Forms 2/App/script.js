@@ -12,9 +12,7 @@ const emailError = document.getElementById("emailError");
 const phoneNumberError = document.getElementById("phoneNumberError");
 const genderError = document.getElementById("genderError");
 
-form.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent form submission
-
+form.addEventListener("button", function (event) {
   // Reset error messages
   firstNameError.textContent = "";
   lastNameError.textContent = "";
@@ -49,7 +47,7 @@ form.addEventListener("submit", function (event) {
   }
 
   // Validate phone number
-  if (phoneNumberInput.value.trim().length !== 10) {
+  if (phoneNumberInput.value.trim().length !== 11) {
     phoneNumberError.textContent = "Phone number must be 10 digits";
     isValid = false;
   }
@@ -71,14 +69,29 @@ form.addEventListener("submit", function (event) {
     };
 
     // Submit form data to 'database.json'
+
     submitFormData(formData);
   }
 });
 
 function submitFormData(formData) {
   // Code to submit form data to 'database.json'
-  const fileData = JSON.parse(localStorage.getItem("database.json")) || [];
-  fileData.push(formData);
-  localStorage.setItem("database.json", JSON.stringify(fileData));
-  console.log("Form data submitted to database.json");
+  // const fileData = JSON.parse(localStorage.getItem("database.json")) || [];
+  // fileData.push(formData);
+  // localStorage.setItem("database.json", JSON.stringify(fileData));
+  // console.log("Form data submitted to database.json");
+
+  fetch("/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  }).then( res => res.json())
+  .then(res => {
+    console.log(res);
+  }).catch(err => {
+    alert(err.message);
+  })
+
 }
