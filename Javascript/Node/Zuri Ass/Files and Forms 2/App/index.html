@@ -5,7 +5,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Validation</title>
-    <link rel="stylesheet" href="/style">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,11 +120,91 @@
                 <span id="genderError" class="error"></span>
             </div>
 
-            <button type="button">Submit</button>
+            <button type="button" onclick="submitFormData()">Submit</button>
         </form>
     </div>
 
-    <script src="/script"></script>
+    <script>
+        function submitFormData() {
+            const form = document.getElementById("myForm");
+            const firstNameInput = document.getElementById("firstName");
+            const lastNameInput = document.getElementById("lastName");
+            const otherNamesInput = document.getElementById("otherNames");
+            const emailInput = document.getElementById("email");
+            const phoneNumberInput = document.getElementById("phoneNumber");
+            const genderSelect = document.getElementById("gender");
+
+            const firstNameError = document.getElementById("firstNameError");
+            const lastNameError = document.getElementById("lastNameError");
+            const emailError = document.getElementById("emailError");
+            const phoneNumberError = document.getElementById("phoneNumberError");
+            const genderError = document.getElementById("genderError");
+
+            firstNameError.textContent = "";
+            lastNameError.textContent = "";
+            emailError.textContent = "";
+            phoneNumberError.textContent = "";
+            genderError.textContent = "";
+
+            let isValid = true;
+
+            if (firstNameInput.value.trim().length < 1) {
+                firstNameError.textContent = "First name is required";
+                isValid = false;
+            } else if (/\d/.test(firstNameInput.value.trim())) {
+                firstNameError.textContent = "First name cannot contain numbers";
+                isValid = false;
+            }
+
+            if (lastNameInput.value.trim().length < 1) {
+                lastNameError.textContent = "Last name is required";
+                isValid = false;
+            } else if (/\d/.test(lastNameInput.value.trim())) {
+                lastNameError.textContent = "Last name cannot contain numbers";
+                isValid = false;
+            }
+
+            if (!emailInput.value.includes("@") || !emailInput.value.includes(".")) {
+                emailError.textContent = "Invalid email format";
+                isValid = false;
+            }
+
+            if (phoneNumberInput.value.trim().length !== 11) {
+                phoneNumberError.textContent = "Phone number must be 11 digits";
+                isValid = false;
+            }
+
+            if (genderSelect.value === "") {
+                genderError.textContent = "Gender is required";
+                isValid = false;
+            }
+
+            if (isValid) {
+                let body = {
+                    firstName: firstNameInput.value.trim(),
+                    lastName: lastNameInput.value.trim(),
+                    otherNames: otherNamesInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    phoneNumber: phoneNumberInput.value.trim(),
+                    gender: genderSelect.value,
+                };
+
+                fetch("/submit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(body),
+                }).then(res => res.json())
+                    .then(res => {
+                        alert(res.message);
+                        form.reset();
+                    }).catch(err => {
+                        alert(err.message);
+                    });
+            }
+        }
+    </script>
 </body>
 
 </html>
